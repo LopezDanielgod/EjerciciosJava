@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejemplo 2.7 - Programación Estructurada en Java</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background-color: #f5f7fa;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .page-header {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .page-header h1 {
+      color: #0066cc;
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .exercises-main {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .exercise-card {
+      margin-bottom: 30px;
+    }
+
+    .exercise-header {
+      margin-bottom: 30px;
+    }
+
+    .exercise-badge {
+      display: inline-block;
+      background: #e6f2ff;
+      color: #0066cc;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .exercise-header h2 {
+      font-size: 1.8rem;
+      color: #1a1a1a;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .exercise-description {
+      color: #555;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      border-left: 4px solid #0066cc;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .diagram-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 20px 0;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .diagram-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .exercise-content {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .exercise-main h3 {
+      color: #0066cc;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .exercise-main p {
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .exercise-main ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .exercise-main li {
+      color: #555;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .exercise-main strong {
+      color: #1a1a1a;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      color: #d63384;
+      font-size: 0.9em;
+    }
+
+    .code-block {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #333;
+      white-space: pre;
+    }
+
+    .exercise-sidebar {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 30px;
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+    }
+
+    .exercise-sidebar h3 {
+      color: #1a1a1a;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .note-text {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .exercise-sidebar ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .exercise-sidebar li {
+      color: #555;
+      margin-bottom: 12px;
+      padding-left: 5px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .page-footer {
+      text-align: center;
+      padding: 30px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 900px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 15px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: #667eea;
+    }
+
+    .close-btn {
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.3s;
+    }
+
+    .close-btn:hover {
+      color: #667eea;
+    }
+
+    .diagram-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .diagram-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      background: white;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+
+    th, td {
+      padding: 12px;
+      text-align: center;
+      border: 1px solid #ddd;
+    }
+
+    th {
+      background: #f8f9fa;
+      font-weight: 600;
+      color: #333;
+    }
+
+    .function-box {
+      background: #e8f4f8;
+      border: 2px solid #0066cc;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+    }
+
+    .function-box h4 {
+      color: #0066cc;
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+    }
+
+    @media (max-width: 1024px) {
+      .exercise-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .exercise-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>Ejemplo 2.7 - Estructura Selectiva Múltiple</h1>
+      <p class="subtitle">Programación Estructurada en Java - Página 66</p>
+    </header>
+
+    <main class="exercises-main">
+      <article id="ejemplo-2-7" class="exercise-card" aria-labelledby="ejercicio-title">
+        <header class="exercise-header">
+          <span class="exercise-badge">Programa 2.10</span>
+          <h2 id="ejercicio-title">FUNCIÓN_SELECTIVA_MÚLTIPLE</h2>
+          
+          <p class="exercise-description">
+            Construya un diagrama de flujo tal que dado como datos dos variables de tipo entero, obtenga el resultado de la siguiente función:
+          </p>
+
+          <div class="function-box">
+            <h4>Función a calcular:</h4>
+            <div style="text-align: center; font-size: 1.1rem; line-height: 2;">
+              VAL = <br>
+              &nbsp;&nbsp;&nbsp;&nbsp;100 * V &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Si NUM = 1<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;100 ^^ V &nbsp;&nbsp;&nbsp;&nbsp; Si NUM = 2<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;100 / V &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Si NUM = 5<br>
+              &nbsp;&nbsp;&nbsp;&nbsp;0 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Para cualquier otro valor de NUM
+            </div>
+          </div>
+
+          <button class="diagram-btn" onclick="openDiagramModal()">📊 Ver Diagrama de Flujo</button>
+        </header>
+        
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Datos</h3>
+            <p><strong>NUM, V</strong></p>
+
+            <h3>Donde</h3>
+            <ul>
+              <li><strong>NUM:</strong> es una variable de tipo entero que representa el tipo (opción) de cálculo que se va a realizar.</li>
+              <li><strong>V:</strong> es una variable de tipo entero que se utiliza para el cálculo de la función.</li>
+              <li><strong>VAL:</strong> es una variable de tipo real que almacena el resultado de la función.</li>
+            </ul>
+
+            <h3>Explicación de las Variables</h3>
+            <ul>
+              <li><strong>NUM:</strong> Variable de tipo entero.</li>
+              <li><strong>V:</strong> Variable de tipo entero.</li>
+              <li><strong>VAL:</strong> Variable de tipo real. Almacena el resultado de la función.</li>
+            </ul>
+
+            <h3>Tabla de Seguimiento del Algoritmo</h3>
+            <p>En la tabla 2.5 podemos observar el seguimiento del algoritmo para diferentes corridas:</p>
+
+            <table>
+              <thead>
+                <tr>
+                  <th>NÚMERO DE CORRIDA</th>
+                  <th colspan="2">DATOS</th>
+                  <th>RESULTADO</th>
+                </tr>
+                <tr>
+                  <th></th>
+                  <th>NUM</th>
+                  <th>V</th>
+                  <th>VAL</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>1</td>
+                  <td>9</td>
+                  <td>900</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>7</td>
+                  <td>6</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>5</td>
+                  <td>4</td>
+                  <td>25</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>4</td>
+                  <td>8</td>
+                  <td>0</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>2</td>
+                  <td>5</td>
+                  <td>1000000</td>
+                </tr>
+                <tr>
+                  <td>6</td>
+                  <td>5</td>
+                  <td>10</td>
+                  <td>10</td>
+                </tr>
+              </tbody>
+            </table>
+
+            <h3>Pseudocódigo del Algoritmo</h3>
+            <div class="code-block">(El programa, dados como datos dos variables de tipo
+entero, calcula el resultado de una función)
+
+(NUM y V son variables de tipo entero. VAL es una variable de
+tipo real)
+
+1. Leer NUM y V
+2. Si NUM igual
+   1: Hacer VAL ← 100 * V
+   2: Hacer VAL ← 100 ^ V
+   5: Hacer VAL ← 100 / V
+   De otra forma: Hacer VAL ← 0
+   {Fin del condicional del paso 2}
+3. (Fin del condicional del paso 2)
+4. Escribir VAL</div>
+
+            <h3>Código Java</h3>
+            <div class="code-block">import java.util.Scanner;
+
+public class FuncionSelectivaMultiple {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Declaración de variables
+        int NUM, V;
+        double VAL;
+        
+        // Leer NUM y V
+        System.out.print("Ingrese el valor de NUM (1, 2 o 5): ");
+        NUM = scanner.nextInt();
+        
+        System.out.print("Ingrese el valor de V: ");
+        V = scanner.nextInt();
+        
+        // Calcular VAL según NUM usando switch
+        switch (NUM) {
+            case 1:
+                VAL = 100 * V;
+                break;
+            case 2:
+                VAL = Math.pow(100, V);
+                break;
+            case 5:
+                VAL = 100.0 / V;
+                break;
+            default:
+                VAL = 0;
+                break;
+        }
+        
+        // Mostrar resultado
+        System.out.println("\nRESULTADO:");
+        System.out.println("VAL = " + VAL);
+        
+        scanner.close();
+    }
+}</div>
+
+            <h3>Ejemplo de Ejecución</h3>
+            <div class="code-block">Ingrese el valor de NUM (1, 2 o 5): 1
+Ingrese el valor de V: 9
+
+RESULTADO:
+VAL = 900.0
+
+---
+
+Ingrese el valor de NUM (1, 2 o 5): 2
+Ingrese el valor de V: 5
+
+RESULTADO:
+VAL = 1.0E10
+
+---
+
+Ingrese el valor de NUM (1, 2 o 5): 5
+Ingrese el valor de V: 10
+
+RESULTADO:
+VAL = 10.0
+
+---
+
+Ingrese el valor de NUM (1, 2 o 5): 7
+Ingrese el valor de V: 6
+
+RESULTADO:
+VAL = 0.0</div>
+          </section>
+          
+          <aside class="exercise-sidebar">
+            <h3>Notas Rápidas</h3>
+            <p class="note-text">Puntos importantes:</p>
+            <ul>
+              <li>✓ Este ejemplo usa estructura <code>switch</code> (selectiva múltiple)</li>
+              <li>✓ La variable <code>NUM</code> determina qué operación realizar</li>
+              <li>✓ Solo hay 3 casos válidos: 1, 2 y 5</li>
+              <li>✓ El caso <code>default</code> maneja cualquier otro valor</li>
+              <li>✓ Para potencias usa <code>Math.pow(base, exponente)</code></li>
+              <li>✓ Cada <code>case</code> debe terminar con <code>break</code></li>
+            </ul>
+            
+            <h3>Conceptos Clave</h3>
+            <ul>
+              <li>🔀 <strong>Switch:</strong> estructura selectiva múltiple</li>
+              <li>📋 <strong>Case:</strong> cada opción posible</li>
+              <li>🚪 <strong>Default:</strong> caso por defecto</li>
+              <li>⚠️ <strong>Break:</strong> evita que se ejecuten los siguientes casos</li>
+            </ul>
+            
+            <h3>Operaciones</h3>
+            <ul>
+              <li><strong>NUM = 1:</strong> Multiplicación (100 * V)</li>
+              <li><strong>NUM = 2:</strong> Potenciación (100 ^ V)</li>
+              <li><strong>NUM = 5:</strong> División (100 / V)</li>
+              <li><strong>Otro valor:</strong> Resultado = 0</li>
+            </ul>
+            
+            <h3>Tip</h3>
+            <p class="note-text">La estructura <code>switch</code> es más eficiente que múltiples <code>if-else</code> cuando tienes muchas opciones discretas basadas en el valor de una variable.</p>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="page-footer">
+      <p class="note-text">Ejercicio de Programación Estructurada en Java - Estructuras Selectivas</p>
+    </footer>
+  </div>
+
+  <!-- Modal para el Diagrama -->
+  <div id="diagramModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📊 Diagrama de Flujo - Ejemplo 2.7</h2>
+        <button class="close-btn" onclick="closeDiagramModal()">&times;</button>
+      </div>
+      <div class="diagram-image">
+        <img src="Img/2.7.png" alt="Diagrama de Flujo Ejemplo 2.7" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openDiagramModal() {
+      document.getElementById('diagramModal').style.display = 'block';
+    }
+
+    function closeDiagramModal() {
+      document.getElementById('diagramModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      var modal = document.getElementById('diagramModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>

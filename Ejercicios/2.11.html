@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Ejemplo 2.11 - Metodología de Diseño de Algoritmos</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', sans-serif;
+      background-color: #f5f7fa;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 40px 20px;
+    }
+
+    .page-header {
+      background: white;
+      padding: 40px;
+      border-radius: 12px;
+      margin-bottom: 30px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .page-header h1 {
+      color: #0066cc;
+      font-size: 2.2rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 1rem;
+    }
+
+    .exercises-main {
+      background: white;
+      border-radius: 12px;
+      padding: 40px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    .exercise-card {
+      margin-bottom: 30px;
+    }
+
+    .exercise-header {
+      margin-bottom: 30px;
+    }
+
+    .exercise-badge {
+      display: inline-block;
+      background: #e6f2ff;
+      color: #0066cc;
+      padding: 6px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    .exercise-header h2 {
+      font-size: 1.8rem;
+      color: #1a1a1a;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .exercise-description {
+      color: #555;
+      font-size: 1.05rem;
+      line-height: 1.7;
+      border-left: 4px solid #0066cc;
+      padding-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .diagram-btn {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 5px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      margin: 20px 0;
+      transition: all 0.3s ease;
+      display: inline-block;
+    }
+
+    .diagram-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+    }
+
+    .exercise-content {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      margin-top: 30px;
+    }
+
+    .exercise-main h3 {
+      color: #0066cc;
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-top: 28px;
+      margin-bottom: 12px;
+    }
+
+    .exercise-main p {
+      color: #555;
+      margin-bottom: 16px;
+      line-height: 1.7;
+    }
+
+    .exercise-main ul {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .exercise-main li {
+      color: #555;
+      margin-bottom: 10px;
+      line-height: 1.6;
+    }
+
+    .exercise-main strong {
+      color: #1a1a1a;
+    }
+
+    code {
+      background: #f5f5f5;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      color: #d63384;
+      font-size: 0.9em;
+    }
+
+    .code-block {
+      background: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 8px;
+      padding: 20px;
+      margin: 20px 0;
+      overflow-x: auto;
+      font-family: 'Consolas', 'Monaco', 'Courier New', monospace;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      color: #333;
+    }
+
+    .exercise-sidebar {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 30px;
+      height: fit-content;
+      position: sticky;
+      top: 20px;
+    }
+
+    .exercise-sidebar h3 {
+      color: #1a1a1a;
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 16px;
+    }
+
+    .note-text {
+      color: #555;
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+      line-height: 1.6;
+    }
+
+    .exercise-sidebar ul {
+      list-style: none;
+      margin-top: 12px;
+    }
+
+    .exercise-sidebar li {
+      color: #555;
+      margin-bottom: 12px;
+      padding-left: 5px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+
+    .page-footer {
+      text-align: center;
+      padding: 30px;
+      color: #666;
+      font-size: 0.9rem;
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 1000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 5% auto;
+      padding: 20px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 900px;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #667eea;
+      padding-bottom: 15px;
+    }
+
+    .modal-header h2 {
+      margin: 0;
+      color: #667eea;
+    }
+
+    .close-btn {
+      font-size: 28px;
+      font-weight: bold;
+      color: #aaa;
+      cursor: pointer;
+      background: none;
+      border: none;
+      transition: color 0.3s;
+    }
+
+    .close-btn:hover {
+      color: #667eea;
+    }
+
+    .diagram-image {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .diagram-image img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    @media (max-width: 1024px) {
+      .exercise-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .exercise-sidebar {
+        position: static;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="page-header">
+      <h1>Ejercicio 2.11 - Cálculo de Promedio</h1>
+      <p class="subtitle">Metodología de Diseño de Algoritmos</p>
+    </header>
+
+    <main class="exercises-main">
+      <article id="ejemplo-2-11" class="exercise-card" aria-labelledby="ejercicio-title">
+        <header class="exercise-header">
+          <span class="exercise-badge">Ejercicio 2.11</span>
+          <h2 id="ejercicio-title">CALCULO_PROMEDIO_NUMEROS</h2>
+          
+          <p class="exercise-description">
+            Este programa permite calcular el promedio de un conjunto de números ingresados por el usuario. Usa un ciclo para contabilizar la cantidad de números.
+          </p>
+
+          <button class="diagram-btn" onclick="openDiagramModal()">📊 Ver Diagrama de Flujo</button>
+        </header>
+        
+        <div class="exercise-content">
+          <section class="exercise-main">
+            <h3>Descripción del Programa</h3>
+            <p>El programa solicita la cantidad de números y su respectiva entrada al usuario, calculando así el promedio.</p>
+
+            <h3>Variables Utilizadas</h3>
+            <ul>
+              <li><strong>N, TOTAL:</strong> variables de tipo entero (<code>int</code>)</li>
+              <li><strong>PROMEDIO:</strong> variable de tipo real (<code>double</code>)</li>
+            </ul>
+
+            <h3>Pseudocódigo del Algoritmo</h3>
+            <div class="code-block">1. Leer N
+2. Inicializar TOTAL = 0
+3. Para i desde 1 hasta N hacer
+    3.1 Leer número
+    3.2 TOTAL += número
+4. PROMEDIO = TOTAL / N
+5. Escribir PROMEDIO</div>
+
+            <h3>Código Java</h3>
+            <div class="code-block">
+              <pre>
+import java.util.Scanner;
+
+public class CalculoPromedio {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        // Declaración de variables
+        int N;
+        double TOTAL = 0, PROMEDIO;
+        
+        // Leer cantidad de números
+        System.out.print("Ingrese la cantidad de números: ");
+        N = scanner.nextInt();
+        
+        // Calcular el total
+        for (int i = 1; i <= N; i++) {
+            System.out.print("Ingrese número " + i + ": ");
+            TOTAL += scanner.nextDouble();
+        }
+        
+        // Calcular promedio
+        PROMEDIO = TOTAL / N;
+        
+        // Mostrar resultado
+        System.out.println("\nRESULTADO:");
+        System.out.println("Promedio: " + PROMEDIO);
+        
+        scanner.close();
+    }
+}
+              </pre>
+            </div>
+
+            <h3>Ejemplo de Ejecución</h3>
+            <div class="code-block">
+                <pre>
+Ingrese la cantidad de números: 3
+Ingrese número 1: 5
+Ingrese número 2: 10
+Ingrese número 3: 15
+
+RESULTADO:
+Promedio: 10.0
+                </pre>
+            </div>
+          </section>
+          
+          <aside class="exercise-sidebar">
+            <h3>Notas Rápidas</h3>
+            <p class="note-text">Sigue estos pasos:</p>
+            <ul>
+              <li>✓ Asegúrate de importar <code>java.util.Scanner</code>.</li>
+              <li>✓ Declara variables adecuadas para el conteo y el resultado.</li>
+              <li>✓ Usa un bucle <code>for</code> para iterar sobre entradas.</li>
+              <li>✓ Calcula el promedio adecuadamente al final.</li>
+            </ul>
+            
+            <h3>Conceptos Clave</h3>
+            <ul>
+              <li>📉 <strong>Promedio:</strong> suma de valores dividida entre la cantidad de ellos.</li>
+              <li>💡 Este programa utiliza un ciclo para procesar múltiples entradas.</li>
+            </ul>
+            
+            <h3>Tip</h3>
+            <p class="note-text">Este programa demuestra el uso de estructuras repetitivas en programación, permitiendo trabajar con un número variable de datos.</p>
+          </aside>
+        </div>
+      </article>
+    </main>
+
+    <footer class="page-footer">
+      <p class="note-text">Ejercicio de Programación Estructurada - Metodología de Diseño de Algoritmos</p>
+    </footer>
+  </div>
+
+  <!-- Modal para el Diagrama -->
+  <div id="diagramModal" class="modal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📊 Diagrama de Flujo - Ejemplo 2.11</h2>
+        <button class="close-btn" onclick="closeDiagramModal()">&times;</button>
+      </div>
+      <div class="diagram-image">
+        <img src="Img/2.png" alt="Diagrama de Flujo Ejemplo 2.11" />
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openDiagramModal() {
+      document.getElementById('diagramModal').style.display = 'block';
+    }
+
+    function closeDiagramModal() {
+      document.getElementById('diagramModal').style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+      var modal = document.getElementById('diagramModal');
+      if (event.target == modal) {
+        modal.style.display = 'none';
+      }
+    }
+  </script>
+</body>
+</html>
